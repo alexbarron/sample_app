@@ -4,8 +4,21 @@ fyodor:
   name: Fyodor Dostoevsky
   email: fyodor@cerkov.ru
   password_digest: <%= User.digest('password') %>
+  admin: true
 
 sophrony:
   name: Saint Sophrony
   email: sophrony@britishorthodoxy.co.uk
   password_digest: <%= User.digest('password') %>
+
+nevsky:
+  name: Saint Alexander Nevsky
+  email: nevsky@roc.ru
+  password_digest: <%= User.digest('password') %>
+
+<% 30.times do |n| %>
+user_<%= n %>:
+  name: <%= "User #{n}" %>
+  email: <%= "user-#{n}@example.com" %>
+  password_digest: <%= User.digest('password') %>
+<% end %>

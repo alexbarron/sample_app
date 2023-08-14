@@ -7,6 +7,8 @@ ruby "3.1.0"
 gem "rails", "~> 7.0.6"
 gem "bcrypt"
 gem "bootstrap-sass",  "3.4.1"
+gem "will_paginate", "3.3.1"
+gem "bootstrap-will_paginate", "1.0.0"
 gem "sassc-rails",     "2.1.2"
 gem "sprockets-rails", "3.4.2"
 gem "importmap-rails", "1.1.0"
@@ -23,6 +25,7 @@ end
 
 group :development do
   gem "web-console", "4.2.0"
+  gem "faker"
 end
 
 group :test do
