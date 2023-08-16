@@ -1,5 +1,18 @@
 class User < ApplicationRecord
     has_many :microposts, dependent: :destroy
+
+    # users who are followers have active relationships with the followed user
+    has_many :active_relationships, class_name: "Relationship", foreign_key: "follower_id", dependent: :destroy
+    # selects users inner join on relationships.id  = users.id where follower_id = x
+    # uses follower's user ID to find all users with a corresponding relationships record where the follower ID matches our user
+    # source is necessary because otherwise Rails will look for "following_id"
+    has_many :following, through: :active_relationships, source: :followed
+
+    has_many :passive_relationships, class_name: "Relationship", foreign_key: "followed_id", dependent: :destroy
+    # source is optional because Rails looks for follower_id automatically because it matches the attribute name
+    has_many :followers, through: :passive_relationships, source: :follower 
+    
+
     before_save { email.downcase! }
     validates :name, presence: true, length: { maximum: 50 }
     validates :email, 
@@ -45,6 +58,18 @@ class User < ApplicationRecord
 
     def feed
         Micropost.where("user_id = ?", id)
+    end
+
+    def follow(other_user)
+        following << other_user unless self == other_user
+    end
+
+    def unfollow(other_user)
+        following.delete(other_user)
+    end
+
+    def following?(other_user)
+        following.include?(other_user)
     end
     
 end
