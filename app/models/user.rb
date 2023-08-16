@@ -9,6 +9,7 @@ class User < ApplicationRecord
     has_secure_password
     validates :password, length: { minimum: 6 }, presence: true, allow_nil: true
     attr_accessor :remember_token
+    has_many :microposts, dependent: :destroy
     
     def User.digest(string)
         cost = ActiveModel::SecurePassword.min_cost ? BCrypt::Engine::MIN_COST : BCrypt::Engine.cost
@@ -39,6 +40,10 @@ class User < ApplicationRecord
     def authenticated?(remember_token)
         return false if remember_digest.nil?
         BCrypt::Password.new(remember_digest).is_password?(remember_token)
+    end
+
+    def feed
+        Micropost.where("user_id = ?", id)
     end
     
 end

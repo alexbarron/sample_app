@@ -1,19 +1,19 @@
 # Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 fyodor:
-  name: Fyodor Dostoevsky
-  email: fyodor@cerkov.ru
+  name: Fyodor
+  email: fyodor@mail.com
   password_digest: <%= User.digest('password') %>
   admin: true
 
-sophrony:
-  name: Saint Sophrony
-  email: sophrony@britishorthodoxy.co.uk
+clive:
+  name: Clive
+  email: clive@mail.com
   password_digest: <%= User.digest('password') %>
 
-nevsky:
-  name: Saint Alexander Nevsky
-  email: nevsky@roc.ru
+sandi:
+  name: Sandi
+  email: sandi@mail.com
   password_digest: <%= User.digest('password') %>
 
 <% 30.times do |n| %>

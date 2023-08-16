@@ -9,6 +9,8 @@ Rails.application.routes.draw do
   get "/about", to: 'static_pages#about'
   get "/contact", to: 'static_pages#contact'
   resources :users
+  resources :microposts, only: [:create, :destroy]
+  get '/microposts', to: 'static_pages#home'
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   # Defines the root path route ("/")
