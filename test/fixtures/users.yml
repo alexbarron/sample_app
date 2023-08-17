@@ -16,6 +16,11 @@ sandi:
   email: sandi@mail.com
   password_digest: <%= User.digest('password') %>
 
+juni:
+  name: Juni
+  email: juni@mail.com
+  password_digest: <%= User.digest('password') %>
+
 <% 30.times do |n| %>
 user_<%= n %>:
   name: <%= "User #{n}" %>
