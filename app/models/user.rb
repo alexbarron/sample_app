@@ -12,7 +12,6 @@ class User < ApplicationRecord
     # source is optional because Rails looks for follower_id automatically because it matches the attribute name
     has_many :followers, through: :passive_relationships, source: :follower 
     
-
     before_save { email.downcase! }
     validates :name, presence: true, length: { maximum: 50 }
     validates :email, 
@@ -57,7 +56,8 @@ class User < ApplicationRecord
     end
 
     def feed
-        Micropost.where("user_id = ?", id)
+        following_ids = "SELECT followed_id FROM relationships WHERE follower_id = :user_id"
+        Micropost.where("user_id IN (#{following_ids}) OR user_id = :user_id", user_id: id).includes(:user, image_attachment: :blob)
     end
 
     def follow(other_user)
