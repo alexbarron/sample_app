@@ -117,6 +117,7 @@ class UserTest < ActiveSupport::TestCase
     # Self-posts for user with followers
     fyodor.microposts.each do |post_self|
       assert fyodor.feed.include?(post_self)
+      assert_equal fyodor.feed.distinct, fyodor.feed
     end
     # Posts from non-followed user
     fyodor.microposts.each do |post_unfollowed|

@@ -13,6 +13,8 @@ class User < ApplicationRecord
     has_many :followers, through: :passive_relationships, source: :follower 
     
     before_save { email.downcase! }
+    before_create :create_activation_digest
+
     validates :name, presence: true, length: { maximum: 50 }
     validates :email, 
         presence: true, 
@@ -21,7 +23,7 @@ class User < ApplicationRecord
         format: { with: /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i }
     has_secure_password
     validates :password, length: { minimum: 6 }, presence: true, allow_nil: true
-    attr_accessor :remember_token
+    attr_accessor :remember_token, :activation_token
 
     
     def User.digest(string)
@@ -57,7 +59,7 @@ class User < ApplicationRecord
 
     def feed
         following_ids = "SELECT followed_id FROM relationships WHERE follower_id = :user_id"
-        Micropost.where("user_id IN (#{following_ids}) OR user_id = :user_id", user_id: id).includes(:user, image_attachment: :blob)
+        Micropost.where("user_id IN (#{following_ids}) OR user_id = :user_id", user_id: id).distinct.includes(:user, image_attachment: :blob)
     end
 
     def follow(other_user)
@@ -72,4 +74,10 @@ class User < ApplicationRecord
         following.include?(other_user)
     end
     
+    private
+
+        def create_activation_digest
+            self.activation_token = User.new_token
+            self.activation_digest = User.digest(activation_token)
+        end
 end
